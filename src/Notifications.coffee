@@ -4,8 +4,8 @@ Notifications =
 
   add: (arg) ->
     if Types.isString(arg)
-      notif = {content: arg}
-    else if Types.isArray(arg)
+      arg = {content: arg}
+    if Types.isArray(arg)
       _.each arg, (anArg) => @add(anArg)
     else if Types.isObjectLiteral(arg)
       arg.date ?= new Date()

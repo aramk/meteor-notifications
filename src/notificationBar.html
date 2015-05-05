@@ -1,8 +1,10 @@
 <template name="notificationBar">
-  <div class="notification-bar {{currentNotificationLevel}}">
+  <div class="notification-bar {{currentNotificationLevel}} {{overflowing}}">
     <div class="inner">
       <div class="toolbar">
-        <div class="ui icon close button"><i class="close icon"></i></div>
+        {{#if hasNotifications}}
+          <div class="ui icon close button"><i class="close icon"></i></div>
+        {{/if}}
       </div>
       {{#if hasNotifications}}
         <div class="notifications">
@@ -10,8 +12,6 @@
             {{> notification doc=this}}
           {{/each}}
         </div>
-      {{else}}
-        <div class="title notification">Notifications</div>
       {{/if}}
     </div>
   </div>

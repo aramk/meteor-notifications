@@ -12,6 +12,30 @@
     margin: 5px;
     position: relative;
   }
+  &.overflowing {
+    .notifications .notification .content {
+      padding-right: 40px;
+      &::after {
+        content: '...';
+        font-size: 18px;
+        color: black;
+        position: absolute;
+        right: 25px;
+        top: 0;
+        padding: 5px;
+        line-height: 11px;
+      }
+    }
+    &:hover {
+      .notifications .notification {
+        height: auto;
+        overflow: auto;
+        .content::after {
+          display: none;
+        }
+      }
+    }
+  }
   .toolbar {
     position: absolute;
     right: 4px;
@@ -30,7 +54,9 @@
       padding: 0.3rem 0.5rem;
       margin: 0;
       height: 30px;
+      max-height: 300px;
       line-height: 22px;
+      overflow: hidden;
       .icon {
         float: left;
         height: 22px;
@@ -44,6 +70,7 @@
       }
       .content {
         text-align: center;
+        padding-right: 20px;
       }
       &:last-child {
         display: block;
