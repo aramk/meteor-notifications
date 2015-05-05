@@ -1,7 +1,7 @@
 // Meteor package definition.
 Package.describe({
   name: 'aramk:notifications',
-  version: '0.2.1',
+  version: '0.1.0',
   summary: 'A notification widget.',
   git: 'https://github.com/aramk/meteor-notifications.git'
 });
@@ -13,8 +13,8 @@ Package.onUse(function (api) {
     'underscore',
     'templating',
     'less',
-    'reactive-var',
-    'tracker',
+    'reactive-var@1.0.4',
+    'tracker@1.0.5',
     'aramk:utility@0.8.5',
     'aldeed:simple-schema@1.3.2',
     'aldeed:collection2@2.3.3'
