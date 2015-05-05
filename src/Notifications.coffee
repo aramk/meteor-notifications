@@ -3,7 +3,7 @@ Notifications =
   config: (args) ->
     args = Setter.merge({}, args)
     if args.Logger
-      @_bindLogger()
+      @_bindLogger(args.Logger)
 
   add: (arg) ->
     if Types.isString(arg)
@@ -24,18 +24,19 @@ Notifications =
 
   getCollection: -> collection
 
-  _bindLogger: ->
+  _bindLogger: (bindArgs) ->
     unless Logger? then throw new Error('Logger module not found - cannot bind to notifications.')
+    bindLevel = bindArgs.level
     oldMsg = Logger.msg
     Logger.msg = (msg, args, func) ->
       level = msg.toLowerCase()
       args = _.toArray(args)
       lastArg = _.last(args)
-      notify = Types.isObject(lastArg) && lastArg.notify
+      notify = lastArg?.notify
       if notify?
         args.pop()
       argsStr = args.join(' ')
-      unless notify == false
+      if notify != false && Logger.shouldLog(level, bindLevel ? level)
         Notifications.add
           level: level
           title: Strings.toTitleCase(level)
@@ -48,10 +49,11 @@ schema = new SimpleSchema
     optional: true
   content:
     type: String
+    optional: true
   level:
     type: String
     defaultValue: 'info'
-    allowedValues: ['error', 'warning', 'info', 'debug']
+    allowedValues: ['error', 'warn', 'info', 'debug']
   date:
     type: Date
   unread:

@@ -4,13 +4,13 @@ TemplateClass = Template[templateName]
 LevelIcons =
   info: 'info circle'
   debug: 'info circle'
-  warning: 'warning sign'
+  warn: 'warning sign'
   error: 'ban'
 
 LevelColors =
   info: 'blue'
   debug: ''
-  warning: 'yellow'
+  warn: 'yellow'
   error: 'red'
 
 TemplateClass.helpers
