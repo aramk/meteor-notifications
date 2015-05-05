@@ -26,6 +26,10 @@ Notifications =
 
   _bindLogger: (bindArgs) ->
     unless Logger? then throw new Error('Logger module not found - cannot bind to notifications.')
+    # By default, only generate notifications for errors but continue to allow logging with Logger
+    # on the existing level.
+    if bindArgs == true
+      bindArgs = {level: 'error'}
     bindLevel = bindArgs.level
     oldMsg = Logger.msg
     Logger.msg = (msg, args, func) ->
