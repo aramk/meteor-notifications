@@ -1,6 +1,6 @@
 Notifications =
 
-  config: (args) ->
+  config: _.once (args) ->
     args = Setter.merge({}, args)
     if args.Logger
       @_bindLogger(args.Logger)
