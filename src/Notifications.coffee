@@ -18,9 +18,7 @@ Notifications =
 
   getByDate: -> collection.find({}, {sort: {date: -1}}).fetch()
 
-  getCurrent: ->
-    id = current.get()
-    if id then collection.findOne(id)
+  getCurrent: -> collection.findOne(_id: currentId.get())
 
   getCollection: -> collection
 
@@ -67,8 +65,7 @@ schema = new SimpleSchema
 collection = Collections.createTemporary()
 collection.attachSchema(schema)
 
-current = new ReactiveVar()
-
+currentId = new ReactiveVar()
 Tracker.autorun ->
   notifs = Notifications.getCollection().find({unread: true}, {sort: {date: -1}}).fetch()
-  current.set(_.first(notifs))
+  currentId.set(_.first(notifs)?._id)
