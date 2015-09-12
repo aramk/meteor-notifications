@@ -15,9 +15,9 @@ Package.onUse(function (api) {
     'less',
     'reactive-var@1.0.4',
     'tracker@1.0.5',
-    'aramk:utility@0.8.6',
     'aldeed:simple-schema@1.3.2',
-    'aldeed:collection2@2.3.3'
+    'aldeed:collection2@2.3.3',
+    'urbanetic:utility@1.0.0'
   ], 'client');
   api.use([
     'semantic:ui-css@2.0.8'
