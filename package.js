@@ -20,7 +20,7 @@ Package.onUse(function (api) {
     'aldeed:collection2@2.3.3'
   ], 'client');
   api.use([
-    'semantic:ui-css@2.0.8'
+    'semantic:ui-css@1.11.5'
   ], {weak: true});
   api.imply('semantic:ui-css');
   api.export('Notifications', 'client');
