@@ -1,9 +1,9 @@
 Notifications =
 
-  config: _.once (args) ->
+  # Sets up configuration options.
+  config: (args) ->
     args = Setter.merge({}, args)
-    if args.Logger
-      @_bindLogger(args.Logger)
+    if args.Logger then @_bindLogger(args.Logger)
 
   add: (arg) ->
     if Types.isString(arg)
@@ -16,7 +16,7 @@ Notifications =
     else
       throw new Error('Invalid notification argument: ' + arg)
 
-  getByDate: -> collection.find({}, {sort: {date: -1}}).fetch()
+  getByDate: -> collection.find({}, {sort: {date: -1}})
 
   getCurrent: -> collection.findOne(_id: currentId.get())
 

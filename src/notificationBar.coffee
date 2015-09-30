@@ -25,9 +25,22 @@ TemplateClass.helpers
   overflowing: -> if Template.instance().overflowing.get() then 'overflowing'
 
 TemplateClass.events
-  'click .close.button': ->
-    current = Notifications.getCurrent()
-    if current
-      Notifications.getCollection().update(current._id, {$set: {unread: false}})
+  'click .close.button': (e, template) ->
+    modifier = {$set: {unread: false}}
+    closeAll = getSettings(template).closeAll
+    if closeAll
+      Notifications.getCollection().update {unread: true}, modifier, {multi: true}
+    else
+      current = Notifications.getCurrent()
+      if current then Notifications.getCollection().update current._id, modifier
 
-getCursor = -> Notifications.getCollection().find({unread: true})
+getCursor = (template) ->
+  template = getTemplate(template)
+  options = {}
+  limit = getSettings(template).limit
+  if limit? then options.limit = limit
+  Notifications.getCollection().find({unread: true}, options)
+
+getTemplate = (template) -> Templates.getNamedInstance(templateName, template)
+
+getSettings = (template) -> getTemplate(template).data.settings ? {}
