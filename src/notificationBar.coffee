@@ -43,4 +43,4 @@ getCursor = (template) ->
 
 getTemplate = (template) -> Templates.getNamedInstance(templateName, template)
 
-getSettings = (template) -> getTemplate(template).data.settings ? {}
+getSettings = (template) -> getTemplate(template).data?.settings ? {}
