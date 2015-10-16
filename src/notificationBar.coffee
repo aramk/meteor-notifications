@@ -27,7 +27,7 @@ TemplateClass.helpers
 TemplateClass.events
   'click .close.button': (e, template) ->
     modifier = {$set: {dateRead: new Date()}}
-    closeAll = getSettings(template).closeAll
+    closeAll = getSettings(template).closeAll ? true
     if closeAll
       Notifications.getCollection().update {dateRead: $exists: false}, modifier, {multi: true}
     else

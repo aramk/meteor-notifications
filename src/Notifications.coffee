@@ -42,6 +42,9 @@ Notifications =
 collection = Collections.createTemporary()
 collection.attachSchema Events.getCollection().simpleSchema()
 
+# Copy persistent events into the notification collection.
+Collections.copy Events.getCollection(), collection
+
 currentId = new ReactiveVar()
 Tracker.autorun ->
   selector = {dateRead: $exists: false}

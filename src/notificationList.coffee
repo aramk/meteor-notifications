@@ -11,7 +11,7 @@ TemplateClass.helpers
 
 getCursor = (template) ->
   template = getTemplate(template)
-  options = {}
+  options = {sort: dateCreated: -1}
   limit = getSettings(template).limit
   if limit? then options.limit = limit
   Notifications.getCollection().find({}, options)
