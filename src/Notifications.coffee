@@ -6,17 +6,11 @@ Notifications =
     if args.Logger then @_bindLogger(args.Logger)
 
   add: (arg) ->
-    if Types.isString(arg)
-      arg = {content: arg}
-    if Types.isArray(arg)
-      _.each arg, (anArg) => @add(anArg)
-    else if Types.isObjectLiteral(arg)
-      arg.date ?= new Date()
-      collection.insert(arg)
-    else
-      throw new Error('Invalid notification argument: ' + arg)
-
-  getByDate: -> collection.find({}, {sort: {date: -1}})
+    event = Events.parse(arg)
+    # if event.level? and !event.label?
+    #   event.label = event.level
+    #   delete event.level
+    collection.insert(event)
 
   getCurrent: -> collection.findOne(_id: currentId.get())
 
@@ -40,32 +34,16 @@ Notifications =
       argsStr = args.join(' ')
       if notify != false && Logger.shouldLog(level, bindLevel ? level)
         Notifications.add
-          level: level
+          label: level
           title: Strings.toTitleCase(level)
           content: argsStr
       oldMsg.call(Logger, msg, args, func)
 
-schema = new SimpleSchema
-  title:
-    type: String
-    optional: true
-  content:
-    type: String
-    optional: true
-  level:
-    type: String
-    defaultValue: 'info'
-    allowedValues: ['error', 'warn', 'info', 'debug']
-  date:
-    type: Date
-  unread:
-    type: Boolean
-    defaultValue: true
-
 collection = Collections.createTemporary()
-collection.attachSchema(schema)
+collection.attachSchema Events.getCollection().simpleSchema()
 
 currentId = new ReactiveVar()
 Tracker.autorun ->
-  notifs = Notifications.getCollection().find({unread: true}, {sort: {date: -1}}).fetch()
+  selector = {dateRead: $exists: false}
+  notifs = Notifications.getCollection().find(selector, {sort: {dateCreated: -1}}).fetch()
   currentId.set(_.first(notifs)?._id)

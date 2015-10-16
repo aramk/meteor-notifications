@@ -21,15 +21,15 @@ TemplateClass.rendered = ->
 TemplateClass.helpers
   notifications: -> getCursor()
   hasNotifications: -> getCursor().count() > 0
-  currentNotificationLevel: -> Notifications.getCurrent()?.level
+  currentNotificationLevel: -> Notifications.getCurrent()?.label
   overflowing: -> if Template.instance().overflowing.get() then 'overflowing'
 
 TemplateClass.events
   'click .close.button': (e, template) ->
-    modifier = {$set: {unread: false}}
+    modifier = {$set: {dateRead: new Date()}}
     closeAll = getSettings(template).closeAll
     if closeAll
-      Notifications.getCollection().update {unread: true}, modifier, {multi: true}
+      Notifications.getCollection().update {dateRead: $exists: false}, modifier, {multi: true}
     else
       current = Notifications.getCurrent()
       if current then Notifications.getCollection().update current._id, modifier
@@ -39,7 +39,7 @@ getCursor = (template) ->
   options = {}
   limit = getSettings(template).limit
   if limit? then options.limit = limit
-  Notifications.getCollection().find({unread: true}, options)
+  Notifications.getCollection().find({dateRead: $exists: false}, options)
 
 getTemplate = (template) -> Templates.getNamedInstance(templateName, template)
 

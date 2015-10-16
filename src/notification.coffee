@@ -7,12 +7,12 @@ LevelIcons =
   warn: 'warning sign'
   error: 'ban'
 
-LevelColors =
-  info: 'blue'
+LevelClasses =
+  info: 'info'
   debug: ''
-  warn: 'yellow'
-  error: 'red'
+  warn: 'warning'
+  error: 'error'
 
 TemplateClass.helpers
-  levelIcon: -> LevelIcons[@doc.level]
-  levelColor: -> LevelColors[@doc.level]
+  levelClass: -> LevelClasses[@doc.label]
+  levelIcon: -> LevelIcons[@doc.label]
