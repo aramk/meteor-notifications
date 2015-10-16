@@ -1,6 +1,6 @@
 <template name="notificationListItem">
 
-  <div class="notification item">
+  <div class="notification item {{readClass}}">
     <div class="content">
       {{#if doc.title}}
         <div class="header">{{doc.title}}</div>
