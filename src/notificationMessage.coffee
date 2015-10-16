@@ -1,4 +1,4 @@
-templateName = 'notification'
+templateName = 'notificationMessage'
 TemplateClass = Template[templateName]
 
 LevelIcons =

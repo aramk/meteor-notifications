@@ -8,6 +8,9 @@
   left: 0;
   width: 100%;
   z-index: 8000;
+  // Avoid obstructing content behind.
+  height: 1px;
+  overflow: visible;
   .inner {
     max-width: 500px;
     margin: 8px auto;
@@ -95,6 +98,26 @@
   &.warn {
     .toolbar .icon {
       color: @color-yellow-text;
+    }
+  }
+}
+
+.notification-list {
+  .notification.item {
+    .header, .description {
+      float: left;
+      font-size: 0.95rem;
+    }
+    .header {
+      margin-bottom: 0.3rem;
+    }
+    .date {
+      float: right;
+      color: rgba(0, 0, 0, 0.4);
+      font-size: 0.875em;
+    }
+    .description {
+      clear: both;
     }
   }
 }

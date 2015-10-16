@@ -27,10 +27,14 @@ Package.onUse(function (api) {
   api.export('Notifications', 'client');
   api.addFiles([
     'src/Notifications.coffee',
-    'src/notification.html',
-    'src/notification.coffee',
+    'src/notificationMessage.html',
+    'src/notificationMessage.coffee',
+    'src/notificationList.html',
+    'src/notificationList.coffee',
+    'src/notificationListItem.html',
+    'src/notificationListItem.coffee',
     'src/notificationBar.html',
     'src/notificationBar.coffee',
-    'src/notificationBar.less'
+    'src/notifications.less'
   ], 'client');
 });
