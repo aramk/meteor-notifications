@@ -1,6 +1,9 @@
 <template name="notificationListItem">
 
   <div class="notification item {{readClass}}">
+    {{#unless doc.dateRead}}
+      <i class="inactive icon circle blue" title="Unread"></i>
+    {{/unless}}
     <div class="content">
       {{#if doc.title}}
         <div class="header">{{doc.title}}</div>

@@ -39,6 +39,8 @@ Notifications =
           content: argsStr
       oldMsg.call(Logger, msg, args, func)
 
+  readAll: -> Meteor.call('events/readAll')
+
 collection = Collections.createTemporary()
 collection.attachSchema Events.getCollection().simpleSchema()
 
