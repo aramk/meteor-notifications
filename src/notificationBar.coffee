@@ -29,7 +29,9 @@ TemplateClass.events
     modifier = {$set: {dateRead: new Date()}}
     closeAll = getSettings(template).closeAll ? true
     if closeAll
-      Notifications.getCollection().update {dateRead: $exists: false}, modifier, {multi: true}
+      # TODO(aramk) This should only hide the notifications and mark the currently visible
+      # notification as read, not all of them.
+      Notifications.readAll(events: false)
     else
       current = Notifications.getCurrent()
       if current then Notifications.getCollection().update current._id, modifier

@@ -5,12 +5,7 @@ Notifications =
     args = Setter.merge({}, args)
     if args.Logger then @_bindLogger(args.Logger)
 
-  add: (arg) ->
-    event = Events.parse(arg)
-    # if event.level? and !event.label?
-    #   event.label = event.level
-    #   delete event.level
-    collection.insert(event)
+  add: (arg) -> collection.insert Events.parse(arg)
 
   getCurrent: -> collection.findOne(_id: currentId.get())
 
@@ -39,13 +34,52 @@ Notifications =
           content: argsStr
       oldMsg.call(Logger, msg, args, func)
 
-  readAll: -> Meteor.call('events/readAll')
+  getUnreadCount: ->
+    # Combine the number of persistent events and transient notifications.
+    notifCount = collection.find(eventId: {$exists: false}, dateRead: {$exists: false}).count()
+    eventCount = UserEventStats.get()?.unreadCount ? 0
+    eventCount + notifCount
+
+  readAll: (options) ->
+    modifier = {$set: {dateRead: new Date()}}
+    options = Setter.merge {events: true}, options
+    selector = {dateRead: $exists: false}
+    unless options.events then selector.eventId = {$exists: false}
+    collection.update selector, modifier, {multi: true}
+    # if options.events
+    #   Meteor.
+    # Meteor.call('events/readAll')
+
+schema = new SimpleSchema
+  title:
+    type: String
+    optional: true
+  content:
+    type: String
+    optional: true
+  label:
+    type: String
+    index: true
+    optional: true
+  dateCreated:
+    type: Date
+    index: true
+  dateRead:
+    type: Date
+    index: true
+    optional: true
+  # The Event document ID if this notification was created from one. Transient notifications will
+  # not have this field.
+  eventId:
+    type: String
+    index: true
+    optional: true
 
 collection = Collections.createTemporary()
-collection.attachSchema Events.getCollection().simpleSchema()
+collection.attachSchema(schema)
 
-# Copy persistent events into the notification collection.
-Collections.copy Events.getCollection(), collection
+# Create notifications from persistent events.
+# Collections.copy Events.getCollection(), collection
 
 currentId = new ReactiveVar()
 Tracker.autorun ->

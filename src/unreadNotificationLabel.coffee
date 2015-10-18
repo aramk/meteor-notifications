@@ -1,19 +1,11 @@
 TemplateClass = Template.unreadNotificationLabel
 
-TemplateClass.created = ->
-  @value = new ReactiveVar()
-  updateValue(@)
-  debounceUpdate = _.debounce (=> updateValue(@)), 500
-  Collections.observe Events.getCollection(), debounceUpdate
-
 TemplateClass.helpers
-  value: -> getTemplate().value.get()
+  value: -> getValue()
   hasValue: ->
-    value = getTemplate().value.get()
+    value = getValue()
     value? and value > 0
 
-updateValue = (template) ->
-  Meteor.call 'events/unreadCount', (err, result) ->
-    unless err? then template.value.set parseFloat(result)
+getValue = -> Notifications.getUnreadCount()
 
 getTemplate = -> Template.instance()
