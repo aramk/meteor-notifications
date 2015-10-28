@@ -32,6 +32,7 @@ Package.onUse(function (api) {
     'src/notificationList.html',
     'src/notificationList.coffee',
     'src/notificationListItem.html',
+    'src/notificationListItem.coffee',
     'src/notificationMessage.html',
     'src/notificationMessage.coffee',
     'src/notifications.less',

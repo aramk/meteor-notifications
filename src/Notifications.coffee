@@ -41,14 +41,12 @@ Notifications =
     eventCount + notifCount
 
   readAll: (options) ->
-    modifier = {$set: {dateRead: new Date()}}
     options = Setter.merge {events: true}, options
+    modifier = {$set: {dateRead: new Date()}}
     selector = {dateRead: $exists: false}
     unless options.events then selector.eventId = {$exists: false}
     collection.update selector, modifier, {multi: true}
-    # if options.events
-    #   Meteor.
-    # Meteor.call('events/readAll')
+    Meteor.call('userEvents/readAll')
 
 schema = new SimpleSchema
   title:
@@ -79,7 +77,21 @@ collection = Collections.createTemporary()
 collection.attachSchema(schema)
 
 # Create notifications from persistent events.
-# Collections.copy Events.getCollection(), collection
+Collections.copy Events.getCollection(), collection,
+  beforeInsert: (event) ->
+    delete event.access
+    event.eventId = event._id
+
+# Updating the read all date marks all event notifications as read.
+Tracker.autorun ->
+  readAllDate = UserEventStats.get()?.readAllDate
+  # Run when notifications are added.
+  collection.find()
+  return unless readAllDate?
+  collection.update
+    {eventId: {$exists: true}, dateRead: {$exists: false}, dateCreated: {$lte: readAllDate}},
+    {$set: dateRead: readAllDate},
+    {multi: true}
 
 currentId = new ReactiveVar()
 Tracker.autorun ->
