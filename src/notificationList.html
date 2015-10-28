@@ -7,6 +7,9 @@
             {{> notificationListItem doc=this}}
           {{/each}}
         </div>
+        {{#if hasMoreNotifications}}
+          <div class="ui more button"><i class="arrow down icon"></i>More</div>
+        {{/if}}
       {{else}}
         <p class="info">No notifications</p>
       {{/if}}

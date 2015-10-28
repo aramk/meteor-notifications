@@ -26,22 +26,24 @@ TemplateClass.helpers
 
 TemplateClass.events
   'click .close.button': (e, template) ->
-    modifier = {$set: {dateRead: new Date()}}
+    date = new Date()
+    modifier = {$set: dateRead: date}
     closeAll = getSettings(template).closeAll ? true
+    current = Notifications.getCurrent()
+    if current then Notifications.getCollection().update current._id, modifier
     if closeAll
-      # TODO(aramk) This should only hide the notifications and mark the currently visible
-      # notification as read, not all of them.
-      Notifications.readAll(events: false)
-    else
-      current = Notifications.getCurrent()
-      if current then Notifications.getCollection().update current._id, modifier
+      # Ignores all other notifications to hide them from the bar but leave then unread in the
+      # notifications list.
+      selector = {dateRead: {$exists: false}, _id: {$ne: current._id}}
+      Notifications.getCollection().update selector, {$set: dateIgnored: date}, {multi: true}
 
 getCursor = (template) ->
   template = getTemplate(template)
   options = {}
   limit = getSettings(template).limit
   if limit? then options.limit = limit
-  Notifications.getCollection().find({dateRead: $exists: false}, options)
+  selector = {dateRead: {$exists: false}, dateIgnored: {$exists: false}}
+  Notifications.getCollection().find(selector, options)
 
 getTemplate = (template) -> Templates.getNamedInstance(templateName, template)
 

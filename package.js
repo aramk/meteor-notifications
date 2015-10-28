@@ -18,6 +18,7 @@ Package.onUse(function (api) {
     'aldeed:simple-schema@1.3.2',
     'aldeed:collection2@2.3.3',
     'aramk:events@0.1.0',
+    'momentjs:moment@2.10.3',
     'urbanetic:utility@1.0.1'
   ], 'client');
   api.use([

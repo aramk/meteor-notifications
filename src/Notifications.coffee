@@ -66,6 +66,11 @@ schema = new SimpleSchema
     type: Date
     index: true
     optional: true
+  # Indicates the notification was not read but was ignored for later.
+  dateIgnored:
+    type: Date
+    index: true
+    optional: true
   # The Event document ID if this notification was created from one. Transient notifications will
   # not have this field.
   eventId:
@@ -79,14 +84,17 @@ collection.attachSchema(schema)
 # Create notifications from persistent events.
 Collections.copy Events.getCollection(), collection,
   beforeInsert: (event) ->
+    readAllDate = UserEventStats.get()?.readAllDate
+    if readAllDate? and moment(event.dateCreated).isBefore(readAllDate)
+      event.dateRead = readAllDate
     delete event.access
     event.eventId = event._id
 
 # Updating the read all date marks all event notifications as read.
 Tracker.autorun ->
   readAllDate = UserEventStats.get()?.readAllDate
-  # Run when notifications are added.
-  collection.find()
+  # Run when notifications are changed.
+  collection.find().count()
   return unless readAllDate?
   selector =
     eventId: {$exists: true}
