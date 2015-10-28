@@ -88,10 +88,11 @@ Tracker.autorun ->
   # Run when notifications are added.
   collection.find()
   return unless readAllDate?
-  collection.update
-    {eventId: {$exists: true}, dateRead: {$exists: false}, dateCreated: {$lte: readAllDate}},
-    {$set: dateRead: readAllDate},
-    {multi: true}
+  selector =
+    eventId: {$exists: true}
+    dateRead: {$exists: false}
+    dateCreated: {$lte: readAllDate}
+  collection.update selector, {$set: dateRead: readAllDate}, {multi: true}
 
 currentId = new ReactiveVar()
 Tracker.autorun ->
