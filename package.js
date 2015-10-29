@@ -37,7 +37,10 @@ Package.onUse(function (api) {
     'src/notificationMessage.html',
     'src/notificationMessage.coffee',
     'src/notifications.less',
+    'src/notificationUserMenu.html',
+    'src/notificationUserMenu.coffee',
     'src/unreadNotificationLabel.html',
-    'src/unreadNotificationLabel.coffee'
+    'src/unreadNotificationLabel.coffee',
+    'src/userMenubuttons.html',
   ], 'client');
 });
