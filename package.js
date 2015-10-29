@@ -1,8 +1,8 @@
 // Meteor package definition.
 Package.describe({
   name: 'aramk:notifications',
-  version: '0.2.0',
-  summary: 'A notification widget.',
+  version: '0.3.0',
+  summary: 'User notification messages',
   git: 'https://github.com/aramk/meteor-notifications.git'
 });
 
@@ -19,10 +19,11 @@ Package.onUse(function (api) {
     'aldeed:collection2@2.3.3',
     'aramk:events@0.1.0',
     'momentjs:moment@2.10.3',
-    'urbanetic:utility@1.0.1'
+    'urbanetic:utility@1.0.1',
+    'urbanetic:accounts-ui@0.5.0'
   ], 'client');
   api.use([
-    'semantic:ui-css@2.0.8'
+    'semantic:ui-css@2.1.2'
   ], {weak: true});
   api.imply('semantic:ui-css');
   api.export('Notifications', 'client');
@@ -41,6 +42,6 @@ Package.onUse(function (api) {
     'src/notificationUserMenu.coffee',
     'src/unreadNotificationLabel.html',
     'src/unreadNotificationLabel.coffee',
-    'src/userMenubuttons.html',
+    'src/userMenuButtons.html'
   ], 'client');
 });

@@ -1,30 +1,28 @@
 <template name="notificationUserMenu">
-  <div class="user-notifications-menu">
-    <div class="ui menu">
-      <a class="browse item">
-        {{userName}}
-        {{> unreadNotificationLabel}}
-        <i class="dropdown icon"></i>
-      </a>
-    </div>
-    <div class="ui flowing basic popup">
-      <div class="ui one column internally celled grid">
-        <div class="row">
-          <div class="column buttons">
-            {{> Template.dynamic template=buttonsTemplateName}}
-          </div>
+  <div class="ui menu notifications">
+    <a class="browse item">
+      {{userName}}
+      {{> unreadNotificationLabel}}
+      <i class="dropdown icon"></i>
+    </a>
+  </div>
+  <div class="ui flowing basic popup notifications">
+    <div class="ui one column internally celled grid">
+      <div class="row">
+        <div class="column buttons">
+          {{> Template.dynamic template=buttonsTemplateName}}
         </div>
-        <div class="row">
-          <div class="column notifications">
-            <h4 class="ui header">
-              <!-- <i class="announcement icon"></i> -->
-              Notifications
-              {{#if hasUnreadNotifications}}
-                <a class="clear-all">Clear All</a>
-              {{/if}}
-            </h4>
-            {{> notificationList}}
-          </div>
+      </div>
+      <div class="row">
+        <div class="column notifications">
+          <h4 class="ui header">
+            <!-- <i class="announcement icon"></i> -->
+            Notifications
+            {{#if hasUnreadNotifications}}
+              <a class="clear-all">Clear All</a>
+            {{/if}}
+          </h4>
+          {{> notificationList}}
         </div>
       </div>
     </div>

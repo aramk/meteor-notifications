@@ -131,43 +131,52 @@
   }
 }
 
-.user-notifications-menu {
-  > .ui.popup {
-    margin-top: 0;
-    max-width: 340px;
-    .column.notifications {
-      padding-bottom: 0;
-      .notification-list {
-        max-height: 60vh;
-        overflow: auto;
-        .notifications {
-          margin-bottom: 1rem;
-        }
+.ui.notifications.menu {
+  box-shadow: none;
+  border: 0;
+  background: transparent;
+  .notification-count {
+    // Avoids expanding height of the menu.
+    margin-top: -5px;
+    margin-bottom: -5px;
+  }
+}
+
+.ui.popup.notifications {
+  margin-top: 0;
+  max-width: 340px;
+  .column.notifications {
+    padding-bottom: 0;
+    .notification-list {
+      max-height: 60vh;
+      overflow: auto;
+      .notifications {
+        margin-bottom: 1rem;
       }
     }
-    .column.buttons {
-      padding: 0;
-      text-align: center;
-      > .ui.menu {
-        border: 0;
-        box-shadow: none;
+  }
+  .column.buttons {
+    padding: 0;
+    text-align: center;
+    > .ui.menu {
+      border: 0;
+      box-shadow: none;
+      display: inline-block;
+      .item {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.5rem 1rem 0.5rem;
         display: inline-block;
-        .item {
-          font-size: 0.8rem;
-          padding: 0.4rem;
-          display: inline-block;
-          .icon {
-            font-size: 1.2rem !important;
-          }
+        .icon {
+          font-size: 1.2rem !important;
         }
       }
     }
-    a.clear-all {
-      color: #aaa;
-      font-weight: normal;
-      font-size: 0.9rem;
-      float: right;
-      cursor: pointer;
-    }
+  }
+  a.clear-all {
+    color: #aaa;
+    font-weight: normal;
+    font-size: 0.9rem;
+    float: right;
+    cursor: pointer;
   }
 }

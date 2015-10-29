@@ -3,7 +3,7 @@ TemplateClass = Template[templateName]
 
 TemplateClass.rendered = ->
   $popup = @$('.ui.popup')
-  $menu = @$('.user-notifications-menu > .ui.menu')
+  $menu = @$('.ui.notifications.menu')
   $menu.popup
     position: 'bottom right'
     on: 'click'
