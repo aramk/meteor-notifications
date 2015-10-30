@@ -27,10 +27,9 @@ TemplateClass.helpers
 TemplateClass.events
   'click .close.button': (e, template) ->
     date = new Date()
-    modifier = {$set: dateRead: date}
     closeAll = getSettings(template).closeAll ? true
     current = Notifications.getCurrent()
-    if current then Notifications.getCollection().update current._id, modifier
+    if current then Notifications.read(current._id)
     if closeAll
       # Ignores all other notifications to hide them from the bar but leave then unread in the
       # notifications list.

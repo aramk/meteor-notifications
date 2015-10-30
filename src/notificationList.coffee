@@ -23,6 +23,7 @@ TemplateClass.helpers
 TemplateClass.events
   'click .more.button': (e, template) ->
     Meteor.call 'events/publish/more', (err, result) -> updateHasMore(template)
+  'click .notification.item': (e, template) -> Notifications.open(@doc)
 
 TemplateClass.scrollToTop = (em) ->
   $em = $(em)

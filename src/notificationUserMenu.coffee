@@ -18,5 +18,7 @@ TemplateClass.helpers
 
 TemplateClass.events
   'click .clear-all': -> Notifications.readAll()
-  'click .column.buttons .item': (e, template) ->
-    template.$menu.popup('hide')
+  'click .column.buttons .item': (e, template) -> hidePopup(template)
+  'click .notification.item': (e, template) -> hidePopup(template)
+
+hidePopup = (template) -> template.$menu.popup('hide')

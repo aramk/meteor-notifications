@@ -1,9 +1,17 @@
 Notifications =
 
+  _options: null
+
   # Sets up configuration options.
-  config: (args) ->
-    args = Setter.merge({}, args)
-    if args.Logger then @_bindLogger(args.Logger)
+  config: (options) ->
+    unless @_options
+      options = Setter.merge {
+        getDocLabel: (doc) -> null
+        open: (doc) ->
+      }, options
+      if options.Logger then @_bindLogger(options.Logger)
+      @_options = options
+    @_options
 
   add: (arg) -> collection.insert Events.parse(arg)
 
@@ -46,7 +54,19 @@ Notifications =
     selector = {dateRead: $exists: false}
     unless options.events then selector.eventId = {$exists: false}
     collection.update selector, modifier, {multi: true}
-    Meteor.call('userEvents/readAll')
+    Promises.serverMethodCall('userEvents/readAll')
+
+  read: (id) ->
+    doc = collection.findOne(_id: id)
+    unless doc then throw new Error("Cannot mark unkown notification as read: #{id}")
+    collection.update id, $set: dateRead: new Date()
+    if doc.eventId then UserEvents.read(eventId: doc.eventId)
+
+  getDocLabel: (doc) -> @_options.getDocLabel(doc)
+
+  open: (doc) ->
+    @_options.open(doc)
+    @read(doc._id) if doc._id?
 
 schema = new SimpleSchema
   title:
@@ -85,10 +105,28 @@ collection.attachSchema(schema)
 Collections.copy Events.getCollection(), collection,
   beforeInsert: (event) ->
     readAllDate = UserEventStats.get()?.readAllDate
-    if readAllDate? and moment(event.dateCreated).isBefore(readAllDate)
+    dateRead = UserEvents.getDateRead(eventId: event._id)
+    if dateRead
+      event.dateRead = dateRead
+    else if readAllDate? and moment(event.dateCreated).isBefore(readAllDate)
       event.dateRead = readAllDate
     delete event.access
+    delete event.doc
     event.eventId = event._id
+
+# Reading individual events should mark their notification has read.
+Collections.observe UserEvents.getCollection(),
+  added: (doc) ->
+    dateRead = UserEvents.getDateRead eventId: doc.eventId
+    return unless dateRead?
+    notification = collection.findOne eventId: doc.eventId
+    Notifications.read(notification._id) if notification?
+
+# UserEvents.getCollection().after.update (userId, doc) ->
+#   dateRead = UserEvents.getDateRead eventId: doc.eventId
+#   return unless dateRead?
+#   notification = collection.findOne eventId: doc.eventId
+#   Notifications.read(notification._id) if notification?
 
 # Updating the read all date marks all event notifications as read.
 Tracker.autorun ->
