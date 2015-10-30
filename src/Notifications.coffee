@@ -107,6 +107,9 @@ schema = new SimpleSchema
 collection = Collections.createTemporary()
 collection.attachSchema(schema)
 
+# Used to prevent notifications appearing on startup for events which occurred beforehand.
+startupDate = new Date()
+
 # Create notifications from persistent events.
 Collections.copy Events.getCollection(), collection,
   beforeInsert: (event) ->
@@ -117,6 +120,11 @@ Collections.copy Events.getCollection(), collection,
       event.dateRead = dateRead
     else if readAllDate? and moment(event.dateCreated).isBefore(readAllDate)
       event.dateRead = readAllDate
+    # Mark as ignored if the event occurred before startup to avoid appearing in the notification
+    # bar.
+    if moment(event.dateCreated).isBefore(startupDate)
+      event.dateIgnored = startupDate
+    # Remove fields from event schema not permitted in notification schema.
     delete event.access
     delete event.doc
     event.eventId = event._id
