@@ -35,6 +35,19 @@ TemplateClass.events
       # notifications list.
       selector = {dateRead: {$exists: false}, _id: {$ne: current._id}}
       Notifications.getCollection().update selector, {$set: dateIgnored: date}, {multi: true}
+  
+  'click .notification-bar': (e, template) ->
+    # Ensure we didn't click a button.
+    $parents = $(e.target).parents()
+    isButtonClick = false
+    $bar = _.find $parents, (em, index) ->
+      if $(em).is('.button')
+        isButtonClick = true
+        return true
+      return $(em).is('.notification-bar')
+    return if isButtonClick
+    current = Notifications.getCurrent()
+    Notifications.open(current)
 
 getCursor = (template) ->
   template = getTemplate(template)
