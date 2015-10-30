@@ -74,7 +74,6 @@
         margin-right: 0.5rem;
       }
       .content {
-        text-align: center;
         padding-right: 20px;
       }
       &:last-child {
@@ -83,6 +82,11 @@
       }
       &.title {
         background: white;
+      }
+      &.has-level {
+        .content {
+          text-align: center;
+        }
       }
     }
   }
@@ -109,6 +113,11 @@
   .notification.item {
     text-align: left;
     font-size: 0.95rem;
+    padding: 0.4rem 0.8rem !important;
+    border-left: 5px solid white;
+    &.unread {
+      border-left: 5px solid #2185d0;
+    }
     .header, .doc-label, .description {
       float: left;
     }
@@ -125,6 +134,10 @@
     }
     .doc-label, .description {
       clear: both;
+    }
+    .doc-label {
+      font-size: 0.9rem;
+      color: #777;
     }
   }
   .more.button {
@@ -147,7 +160,12 @@
   margin-top: 0;
   max-width: 340px;
   .column.notifications {
+    padding-left: 0;
+    padding-right: 0;
     padding-bottom: 0;
+    .ui.header {
+      padding: 0 1rem;
+    }
     .notification-list {
       max-height: 60vh;
       overflow: auto;

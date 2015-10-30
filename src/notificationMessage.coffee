@@ -14,5 +14,9 @@ LevelClasses =
   error: 'error'
 
 TemplateClass.helpers
-  levelClass: -> LevelClasses[@doc.label]
+  levelClass: -> getLevelClass.call(@)
   levelIcon: -> LevelIcons[@doc.label]
+  hasLevel: -> if getLevelClass.call(@)? then 'has-level'
+  docLabel: -> Notifications.getDocLabel(@doc)
+
+getLevelClass = -> LevelClasses[@doc.label]

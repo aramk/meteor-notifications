@@ -1,11 +1,14 @@
 <template name="notificationMessage">
-  <div class="ui message notification {{levelClass}}" data-id="{{doc._id}}">
+  <div class="ui message notification {{levelClass}} {{hasLevel}}" data-id="{{doc._id}}">
     {{#if levelIcon}}
       <i class="{{levelIcon}} icon"></i>
     {{/if}}
     {{#if doc.title}}
       <div class="title">{{doc.title}}</div>
     {{/if}}
-    <div class="content">{{doc.content}}</div>
+    <div class="content">
+      <div class="doc-label">{{docLabel}}</div>
+      <div class="inner-content">{{doc.content}}</div>
+    </div>
   </div>
 </template>

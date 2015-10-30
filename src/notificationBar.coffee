@@ -5,18 +5,10 @@ TemplateClass.created = ->
   @overflowing = new ReactiveVar(false)
 
 TemplateClass.rendered = ->
-  $notifs = @$('.notifications')
   @autorun =>
-    current = Notifications.getCurrent()
-    overflowing = false
-    if current
-      # NOTE: We could also just find the :last element in the notifications as the current.
-      $current = $('[data-id="' + current._id + '"]', $notifs)
-      $content = $('.content', $current)
-      heightDiff = Math.abs($current.height() - $content.height())
-      overflowing = heightDiff > 5
-      # $current.toggleClass('overflowing', heightDiff > 5)
-    @overflowing.set(overflowing)
+    Notifications.getCurrent()
+    # Delay to allow rendering.
+    _.delay updateOverflowing.bind(@, @), 500
 
 TemplateClass.helpers
   notifications: -> getCursor()
@@ -48,6 +40,20 @@ TemplateClass.events
     return if isButtonClick
     current = Notifications.getCurrent()
     Notifications.open(current)
+
+updateOverflowing = (template) ->
+  template = getTemplate(template)
+  $notifs = template.$('.notifications')
+  current = Notifications.getCurrent()
+  overflowing = false
+  if current
+    # NOTE: We could also just find the :last element in the notifications as the current.
+    $current = $('[data-id="' + current._id + '"]', $notifs)
+    $content = $('.content', $current)
+    heightDiff = Math.abs($current.height() - $content.height())
+    overflowing = heightDiff > 5
+    # $current.toggleClass('overflowing', heightDiff > 5)
+  template.overflowing.set(overflowing)
 
 getCursor = (template) ->
   template = getTemplate(template)
