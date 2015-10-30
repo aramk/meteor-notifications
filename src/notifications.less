@@ -114,6 +114,7 @@
     text-align: left;
     font-size: 0.95rem;
     padding: 0.4rem 0.8rem !important;
+    margin: 2px 0;
     border-left: 5px solid white;
     &.unread {
       border-left: 5px solid #2185d0;
@@ -121,7 +122,7 @@
     .header, .doc-label, .description {
       float: left;
     }
-    .header {
+    .header, .doc-label {
       margin-bottom: 0.3rem;
     }
     .content {
@@ -137,7 +138,10 @@
     }
     .doc-label {
       font-size: 0.9rem;
-      color: #777;
+      color: #999;
+    }
+    .description {
+      color: black;
     }
   }
   .more.button {
@@ -191,7 +195,7 @@
       }
     }
   }
-  a.clear-all {
+  a.read-all {
     color: #aaa;
     font-weight: normal;
     font-size: 0.9rem;

@@ -17,7 +17,7 @@ TemplateClass.helpers
   buttonsTemplateName: -> @settings?.buttonsTemplateName ? 'userMenuButtons'
 
 TemplateClass.events
-  'click .clear-all': -> Notifications.readAll()
+  'click .read-all': -> Notifications.readAll()
   'click .column.buttons .item': (e, template) -> hidePopup(template)
   'click .notification.item': (e, template) -> hidePopup(template)
 
