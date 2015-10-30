@@ -62,6 +62,12 @@ Notifications =
     collection.update id, $set: dateRead: new Date()
     if doc.eventId then UserEvents.read(eventId: doc.eventId)
 
+  unread: (id) ->
+    doc = collection.findOne(_id: id)
+    unless doc then throw new Error("Cannot mark unkown notification as unread: #{id}")
+    collection.update id, $unset: dateRead: null
+    if doc.eventId then UserEvents.unread(eventId: doc.eventId)
+
   getDocLabel: (doc) -> @_options.getDocLabel(doc)
 
   open: (doc) ->
@@ -105,6 +111,7 @@ collection.attachSchema(schema)
 Collections.copy Events.getCollection(), collection,
   beforeInsert: (event) ->
     readAllDate = UserEventStats.get()?.readAllDate
+    # TODO(aramk) This isn't triggered since the event doc is published first.
     dateRead = UserEvents.getDateRead(eventId: event._id)
     if dateRead
       event.dateRead = dateRead
@@ -114,19 +121,19 @@ Collections.copy Events.getCollection(), collection,
     delete event.doc
     event.eventId = event._id
 
+onUserEventChange = (doc) ->
+  dateRead = UserEvents.getDateRead eventId: doc.eventId
+  return unless dateRead?
+  notification = collection.findOne eventId: doc.eventId
+  Notifications.read(notification._id) if notification?
+
 # Reading individual events should mark their notification has read.
 Collections.observe UserEvents.getCollection(),
-  added: (doc) ->
-    dateRead = UserEvents.getDateRead eventId: doc.eventId
-    return unless dateRead?
+  added: onUserEventChange
+  changed: onUserEventChange
+  removed: (doc) ->
     notification = collection.findOne eventId: doc.eventId
-    Notifications.read(notification._id) if notification?
-
-# UserEvents.getCollection().after.update (userId, doc) ->
-#   dateRead = UserEvents.getDateRead eventId: doc.eventId
-#   return unless dateRead?
-#   notification = collection.findOne eventId: doc.eventId
-#   Notifications.read(notification._id) if notification?
+    Notifications.unread(notification._id) if notification?
 
 # Updating the read all date marks all event notifications as read.
 Tracker.autorun ->
