@@ -3,8 +3,8 @@ TemplateClass = Template[templateName]
 
 TemplateClass.rendered = ->
   $popup = @$('.ui.popup')
-  $menu = @$('.ui.notifications.menu')
-  $menu.popup
+  @$menu = @$('.ui.notifications.menu')
+  @$menu.popup
     position: 'bottom right'
     on: 'click'
     onVisible: ->
@@ -18,3 +18,5 @@ TemplateClass.helpers
 
 TemplateClass.events
   'click .clear-all': -> Notifications.readAll()
+  'click .column.buttons .item': (e, template) ->
+    template.$menu.popup('hide')
