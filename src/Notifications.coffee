@@ -8,6 +8,8 @@ Notifications =
       options = Setter.merge {
         getDocLabel: (doc) -> null
         open: (doc) ->
+        getClass: (doc) -> Notifications.LabelClasses[doc.label]
+        getIconClass: (doc) -> Notifications.LabelIcons[doc.label]
       }, options
       if options.Logger then @_bindLogger(options.Logger)
       @_options = options
@@ -68,11 +70,26 @@ Notifications =
     collection.update id, $unset: dateRead: null
     if doc.eventId then UserEvents.unread(eventId: doc.eventId)
 
-  getDocLabel: (doc) -> @_options.getDocLabel(doc)
-
   open: (doc) ->
     @_options.open(doc)
     @read(doc._id) if doc._id?
+
+  # Icons and colors.
+  # TODO(aramk) Allow passing in config.
+  LabelIcons:
+    info: 'info circle'
+    debug: 'info circle'
+    warn: 'warning sign'
+    error: 'ban'
+    comment: 'comment'
+    delivery: 'truck'
+
+  LabelClasses:
+    info: 'info'
+    debug: ''
+    warn: 'warning'
+    error: 'error'
+    comment: 'yellow'
 
 schema = new SimpleSchema
   title:

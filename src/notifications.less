@@ -12,6 +12,7 @@
   height: 1px;
   overflow: visible;
   cursor: pointer;
+  font-size: 1rem;
   .inner {
     max-width: 500px;
     margin: 8px auto;
@@ -75,6 +76,10 @@
       }
       .content {
         padding-right: 20px;
+        font-size: 0.9rem;
+      }
+      .inner-content {
+        font-size: 1rem;
       }
       &:last-child {
         display: block;
@@ -83,10 +88,11 @@
       &.title {
         background: white;
       }
-      &.has-level {
-        .content {
-          text-align: center;
-        }
+      &.has-label .content {
+        text-align: center;
+      }
+      &.event .content {
+        text-align: left;
       }
     }
   }
@@ -127,6 +133,9 @@
     }
     .content {
       width: 100%;
+      > .icon {
+        float: left;
+      }
     }
     .date {
       float: right;
@@ -143,6 +152,9 @@
     .description {
       color: black;
     }
+    // &.comment {
+    //   background-color: #FFFDDC !important;
+    // }
   }
   .more.button {
     padding: 0.4rem 0.6rem;

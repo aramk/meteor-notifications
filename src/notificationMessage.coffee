@@ -1,22 +1,16 @@
 templateName = 'notificationMessage'
 TemplateClass = Template[templateName]
 
-LevelIcons =
-  info: 'info circle'
-  debug: 'info circle'
-  warn: 'warning sign'
-  error: 'ban'
-
-LevelClasses =
-  info: 'info'
-  debug: ''
-  warn: 'warning'
-  error: 'error'
-
 TemplateClass.helpers
-  levelClass: -> getLevelClass.call(@)
-  levelIcon: -> LevelIcons[@doc.label]
-  hasLevel: -> if getLevelClass.call(@)? then 'has-level'
-  docLabel: -> Notifications.getDocLabel(@doc)
+  labelClass: -> getClass.call(@)
+  iconClass: -> Notifications.config().getIconClass(@doc)
+  hasLabel: -> if getClass.call(@)? then 'has-label'
+  docLabel: -> Notifications.config().getDocLabel(@doc)
+  eventClass: -> if @doc.eventId? then 'event'
 
-getLevelClass = -> LevelClasses[@doc.label]
+getClass = ->
+  labelClass = Notifications.config().getClass(@doc)
+  if @doc.eventId and !labelClass
+    'blue'
+  else
+    labelClass
