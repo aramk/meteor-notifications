@@ -10,6 +10,7 @@ Package.onUse(function (api) {
   api.versionsFrom('METEOR@0.9.0');
   api.use([
     'coffeescript',
+    'email',
     'underscore',
     'templating',
     'less',
@@ -20,15 +21,19 @@ Package.onUse(function (api) {
     'aramk:events@0.1.0',
     'momentjs:moment@2.10.3',
     'urbanetic:utility@1.0.1',
-    'urbanetic:accounts-ui@0.5.0'
-  ], 'client');
+    'urbanetic:accounts-ui@0.5.0',
+    'mizzao:user-status@0.6.5'
+  ], ['client', 'server']);
   api.use([
     'semantic:ui-css@2.1.2'
   ], {weak: true});
   api.imply('semantic:ui-css');
-  api.export('Notifications', 'client');
+  api.export('Notifications', ['client', 'server']);
   api.addFiles([
-    'src/Notifications.coffee',
+    'src/Notifications.coffee'
+  ], ['client', 'server']);
+  api.addFiles([
+    'src/client.coffee',
     'src/notificationBar.html',
     'src/notificationBar.coffee',
     'src/notificationList.html',
@@ -44,4 +49,7 @@ Package.onUse(function (api) {
     'src/unreadNotificationLabel.coffee',
     'src/userMenuButtons.html'
   ], 'client');
+  api.addFiles([
+    'src/server.coffee'
+  ], 'server');
 });
