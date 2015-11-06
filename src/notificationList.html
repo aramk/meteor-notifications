@@ -1,0 +1,18 @@
+<template name="notificationList">
+  <div class="notification-list">
+    <div class="notifications">
+      {{#if hasNotifications}}
+        <div class="ui relaxed divided list">
+          {{#each notifications}}
+            {{> notificationListItem doc=this}}
+          {{/each}}
+        </div>
+        {{#if hasMoreNotifications}}
+          <div class="ui more button"><i class="arrow down icon"></i>More</div>
+        {{/if}}
+      {{else}}
+        <p class="info">No notifications</p>
+      {{/if}}
+    </div>
+  </div>
+</template>
