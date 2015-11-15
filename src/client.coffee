@@ -1,4 +1,4 @@
-config = Notifications.config
+baseConfig = Notifications.config
 
 _.extend Notifications,
 
@@ -10,7 +10,10 @@ _.extend Notifications,
         getClass: (doc) -> Notifications.LabelClasses[doc.label]
         getIconClass: (doc) -> Notifications.LabelIcons[doc.label]
       }, options
-    config.call(Notifications, options)
+      if options.labels
+        _.extend @LabelIcons, options.labels.icons
+        _.extend @LabelClasses, options.labels.classes
+    baseConfig.call(Notifications, options)
 
   add: (arg) -> collection.insert Events.parse(arg)
 
@@ -79,7 +82,6 @@ _.extend Notifications,
     warn: 'warning sign'
     error: 'ban'
     comment: 'comment'
-    delivery: 'truck'
 
   LabelClasses:
     info: 'info'
