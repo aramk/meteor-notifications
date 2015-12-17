@@ -13,6 +13,7 @@ _.extend Notifications,
       if options.labels
         _.extend @LabelIcons, options.labels.icons
         _.extend @LabelClasses, options.labels.classes
+      if options.Logger? then @_bindLogger(options.Logger)
     baseConfig.call(Notifications, options)
 
   add: (arg) -> collection.insert Events.parse(arg)
@@ -28,7 +29,8 @@ _.extend Notifications,
     if bindArgs == true
       bindArgs = {level: 'error'}
     bindLevel = bindArgs.level
-    oldMsg = Logger.msg
+    # Store a reference to the original method for idempotency.
+    oldMsg = Logger._origMsg = Logger._origMsg ? Logger.msg
     Logger.msg = (msg, args, func) ->
       level = msg.toLowerCase()
       args = _.toArray(args)
