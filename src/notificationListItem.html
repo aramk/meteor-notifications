@@ -1,0 +1,19 @@
+<template name="notificationListItem">
+
+  <div class="notification item {{readClass}} {{doc.label}}">
+    <div class="content">
+      {{#if iconClass}}
+        <i class="{{iconClass}} icon"></i>
+      {{/if}}
+      {{#if doc.title}}
+        <div class="header">{{doc.title}}</div>
+      {{/if}}
+      <div class="date">{{date}}</div>
+      {{#if docLabel}}
+        <div class="doc-label">{{docLabel}}</div>
+      {{/if}}
+      <div class="description">{{doc.content}}</div>
+    </div>
+  </div>
+
+</template>

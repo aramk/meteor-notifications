@@ -1,0 +1,217 @@
+@color-red-text: #d95c5c;
+@color-blue-text: #3b83c0;
+@color-yellow-text: #b58105;
+
+.notification-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 8000;
+  // Avoid obstructing content behind.
+  height: 1px;
+  overflow: visible;
+  cursor: pointer;
+  font-size: 1rem;
+  .inner {
+    max-width: 500px;
+    margin: 8px auto;
+    position: relative;
+  }
+  &.overflowing {
+    .notifications .notification .content {
+      padding-right: 40px;
+      &::after {
+        content: '...';
+        font-size: 18px;
+        color: black;
+        position: absolute;
+        right: 25px;
+        top: 0;
+        padding: 5px;
+        line-height: 11px;
+      }
+    }
+    &:hover {
+      .notifications .notification {
+        height: auto;
+        overflow: auto;
+        .content::after {
+          display: none;
+        }
+      }
+    }
+  }
+  .toolbar {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    z-index: 1;
+    height: 22px;
+    .close.button {
+      margin: 0;
+      padding: 0.3rem 0.3rem;
+      background: none;
+    }
+  }
+  .notifications {
+    .notification {
+      display: none;
+      padding: 0.3rem 0.5rem;
+      margin: 0;
+      height: 30px;
+      max-height: 300px;
+      line-height: 22px;
+      overflow: hidden;
+      .icon {
+        float: left;
+        height: 22px;
+        line-height: 22px;
+        margin-right: 5px;
+      }
+      .title {
+        font-weight: bold;
+        float: left;
+        margin-right: 0.5rem;
+      }
+      .content {
+        padding-right: 20px;
+        font-size: 0.9rem;
+      }
+      .inner-content {
+        font-size: 1rem;
+      }
+      &:last-child {
+        display: block;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+      }
+      &.title {
+        background: white;
+      }
+      &.has-label .content {
+        text-align: center;
+      }
+      &.event .content {
+        text-align: left;
+      }
+    }
+  }
+  &.error {
+    .toolbar .icon {
+      color: @color-red-text;
+    }
+  }
+  &.info {
+    .toolbar .icon {
+      color: @color-blue-text;
+    }
+  }
+  &.warn {
+    .toolbar .icon {
+      color: @color-yellow-text;
+    }
+  }
+}
+
+.notification-list {
+  // To center the "More" button.
+  text-align: center;
+  .notification.item {
+    text-align: left;
+    font-size: 0.95rem;
+    padding: 0.4rem 0.8rem !important;
+    margin: 2px 0;
+    border-left: 5px solid white;
+    &.unread {
+      border-left: 5px solid #2185d0;
+    }
+    .header, .doc-label, .description {
+      float: left;
+    }
+    .header, .doc-label {
+      margin-bottom: 0.3rem;
+    }
+    .content {
+      width: 100%;
+      > .icon {
+        float: left;
+      }
+    }
+    .date {
+      float: right;
+      color: rgba(0, 0, 0, 0.4);
+      font-size: 0.875em;
+    }
+    .doc-label, .description {
+      clear: both;
+    }
+    .doc-label {
+      font-size: 0.9rem;
+      color: #999;
+    }
+    .description {
+      color: black;
+    }
+    // &.comment {
+    //   background-color: #FFFDDC !important;
+    // }
+  }
+  .more.button {
+    padding: 0.4rem 0.6rem;
+  }
+}
+
+.ui.notifications.menu {
+  box-shadow: none;
+  border: 0;
+  background: transparent;
+  .notification-count {
+    // Avoids expanding height of the menu.
+    margin-top: -5px;
+    margin-bottom: -5px;
+  }
+}
+
+.ui.popup.notifications {
+  margin-top: 0;
+  max-width: 340px;
+  .column.notifications {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    .ui.header {
+      padding: 0 1rem;
+    }
+    .notification-list {
+      max-height: 60vh;
+      overflow: auto;
+      .notifications {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+  .column.buttons {
+    padding: 0;
+    text-align: center;
+    > .ui.menu {
+      border: 0;
+      box-shadow: none;
+      display: inline-block;
+      .item {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.5rem 1rem 0.5rem;
+        display: inline-block;
+        .icon {
+          font-size: 1.2rem !important;
+        }
+      }
+    }
+  }
+  a.read-all {
+    color: #aaa;
+    font-weight: normal;
+    font-size: 0.9rem;
+    float: right;
+    cursor: pointer;
+  }
+}

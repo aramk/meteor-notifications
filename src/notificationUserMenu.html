@@ -1,0 +1,30 @@
+<template name="notificationUserMenu">
+  <div class="ui menu notifications">
+    <a class="browse item">
+      <span class="username">{{userName}}</span>
+      {{> unreadNotificationLabel}}
+      <i class="dropdown icon"></i>
+    </a>
+  </div>
+  <div class="ui flowing basic popup notifications">
+    <div class="ui one column internally celled grid">
+      <div class="row">
+        <div class="column buttons">
+          {{> Template.dynamic template=buttonsTemplateName}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="column notifications">
+          <h4 class="ui header">
+            <!-- <i class="announcement icon"></i> -->
+            Notifications
+            {{#if hasUnreadNotifications}}
+              <a class="read-all">Mark All Read</a>
+            {{/if}}
+          </h4>
+          {{> notificationList}}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
