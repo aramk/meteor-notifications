@@ -27,7 +27,6 @@ Package.onUse(function (api) {
   api.use([
     'semantic:ui-css@2.1.2'
   ], {weak: true});
-  api.imply('semantic:ui-css');
   api.export('Notifications', ['client', 'server']);
   api.addFiles([
     'src/Notifications.coffee'
