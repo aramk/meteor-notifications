@@ -44,7 +44,7 @@ _.extend Notifications,
     emailConfig = @config().email
     user = args.user
     event = args.event
-    url = process.env.ROOT_URL
+    url = Meteor.absoluteUrl()
     Email.send
       to: user.emails[0].address
       from: emailConfig.fromAddress
