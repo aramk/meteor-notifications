@@ -48,6 +48,9 @@ Package.onUse(function (api) {
     'src/unreadNotificationLabel.coffee',
     'src/userMenuButtons.html'
   ], 'client');
+  api.addAssets([
+    'assets/notificationEmailTemplate.html'
+  ], 'server');
   api.addFiles([
     'src/server.coffee'
   ], 'server');

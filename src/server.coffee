@@ -1,4 +1,4 @@
-config = Notifications.config
+origConfigFunc = Notifications.config
 
 _.extend Notifications,
 
@@ -9,9 +9,12 @@ _.extend Notifications,
         email:
           enabled: false
           send: @_doSendEmail.bind(@)
+          getTemplate: -> @_getDefaultEmailTemplate()
+          getTemplateData: (args) -> args
+          renderTemplate: (template, templateData) -> _.template(template)(templateData)
       }, options
       if options.email then @_setUpEmail()
-    config.call(Notifications, options)
+    origConfigFunc.call(Notifications, options)
 
   _setUpEmail: ->
     # Listen for event publications and email all users who aren't logged in to see notifications.
@@ -45,13 +48,19 @@ _.extend Notifications,
     user = args.user
     event = args.event
     url = Meteor.absoluteUrl()
-    Email.send
+    template = emailConfig.getTemplate(event) ? @_getDefaultEmailTemplate()
+    templateData = emailConfig.getTemplateData
+      user: user
+      event: event
+      url: url
+    html = emailConfig.renderTemplate(template, templateData)
+    email =
       to: user.emails[0].address
       from: emailConfig.fromAddress
       subject: "Notification: #{event.title}"
-      html: "
-      <p>Hi #{user.profile.name},</p>
-      <p>You have a new notification:</p>
-      <p><a href='#{url}'>#{event.title}</a></p>
-      <p>#{event.content}</p>
-      "
+      html: html
+    email = emailConfig.beforeSend?(email, templateData) ? email
+    return if email == false
+    Email.send(email)
+
+  _getDefaultEmailTemplate: -> Assets.getText('assets/notificationEmailTemplate.html')
