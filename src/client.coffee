@@ -9,6 +9,8 @@ _.extend Notifications,
         open: (doc) ->
         getClass: (doc) -> Notifications.LabelClasses[doc.label]
         getIconClass: (doc) -> Notifications.LabelIcons[doc.label]
+        # Number of milliseconds to show notifications.
+        hideDelay: 10000
       }, options
       if options.labels
         _.extend @LabelIcons, options.labels.icons
@@ -48,9 +50,16 @@ _.extend Notifications,
 
   getUnreadCount: ->
     # Combine the number of persistent events and transient notifications.
-    notifCount = collection.find(eventId: {$exists: false}, dateRead: {$exists: false}).count()
+    notifCount = @getTransientUnreadCount()
     eventCount = UserEventStats.get()?.unreadCount ? 0
     eventCount + notifCount
+
+  getTransientUnreadCount: ->
+    return collection.find(eventId: {$exists: false}, dateRead: {$exists: false}).count()
+
+  getDisplayCursor: (options) ->
+    selector = {dateRead: {$exists: false}, dateIgnored: {$exists: false}}
+    Notifications.getCollection().find(selector, options)
 
   readAll: (options) ->
     options = Setter.merge {events: true}, options
@@ -148,3 +157,25 @@ Tracker.autorun ->
   selector = {dateRead: $exists: false}
   notifs = Notifications.getCollection().find(selector, {sort: {dateCreated: -1}}).fetch()
   currentId.set(_.first(notifs)?._id)
+
+collection.after.insert (userId, doc) -> delayedHide()
+
+delayedHide = ->
+  config = Notifications.config()
+  hideDelay = config.hideDelay
+  return unless hideDelay?
+  isHidePending = true
+  if delayHandle then clearTimeout(delayHandle)
+  delayHandle = setTimeout ->
+    isHidePending = false
+    delayHandle = null
+    last = collection.findOne({dateRead: $exists: false}, {sort: dateCreated: -1})
+    return unless last?
+    Notifications.read(last._id)
+    if Notifications.getDisplayCursor().count() > 0 then delayedHide()
+  , hideDelay
+
+debouncedHide = null
+isHidePending = false
+delayHandle = null
+

@@ -60,8 +60,7 @@ getCursor = (template) ->
   options = {}
   limit = getSettings(template).limit
   if limit? then options.limit = limit
-  selector = {dateRead: {$exists: false}, dateIgnored: {$exists: false}}
-  Notifications.getCollection().find(selector, options)
+  Notifications.getDisplayCursor(options)
 
 getTemplate = (template) -> Templates.getNamedInstance(templateName, template)
 
