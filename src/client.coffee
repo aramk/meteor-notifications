@@ -41,7 +41,8 @@ _.extend Notifications,
       if notify?
         args.pop()
       argsStr = args.join(' ')
-      if notify != false && Logger.shouldLog(level, bindLevel ? level)
+      # Allow ignoring notifications or forcing them per log.
+      if (notify != false and Logger.shouldLog(level, bindLevel ? level)) or notify == true
         Notifications.add
           label: level
           title: Strings.toTitleCase(level)
