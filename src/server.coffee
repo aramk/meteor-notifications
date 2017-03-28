@@ -10,7 +10,7 @@ _.extend Notifications,
           enabled: false
           send: @_doSendEmail.bind(@)
           # The delay (ms) between sent emails. Useful to prevent spamming recipients and being rejected as spam.
-          delay: 5000
+          delay: 0
           getTemplate: -> @_getDefaultEmailTemplate()
           getTemplateData: (args) -> args
           renderTemplate: (template, templateData) -> _.template(template)(templateData)
