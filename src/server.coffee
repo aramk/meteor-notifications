@@ -9,6 +9,8 @@ _.extend Notifications,
         email:
           enabled: false
           send: @_doSendEmail.bind(@)
+          # The delay (ms) between sent emails. Useful to prevent spamming recipients and being rejected as spam.
+          delay: 5000
           getTemplate: -> @_getDefaultEmailTemplate()
           getTemplateData: (args) -> args
           renderTemplate: (template, templateData) -> _.template(template)(templateData)
@@ -41,6 +43,7 @@ _.extend Notifications,
     Logger.debug('Sending email notification', users, event)
 
     _.each users, (user) ->
+      Promises.runSync -> Q.delay(emailConfig.delay)
       emailConfig.send user: user, event: event
 
   _doSendEmail: (args) ->
