@@ -9,10 +9,10 @@ Package.describe({
 Package.onUse(function (api) {
   api.versionsFrom('METEOR@1.6.1');
   api.use([
-    'coffeescript',
+    'coffeescript@1.2.3',
     'email',
     'underscore',
-    'templating',
+    'templating@1.3.2',
     'less',
     'reactive-var@1.0.4',
     'tracker@1.0.5',
