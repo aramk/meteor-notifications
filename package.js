@@ -1,7 +1,7 @@
 // Meteor package definition.
 Package.describe({
   name: 'aramk:notifications',
-  version: '1.1.0',
+  version: '2.0.0',
   summary: 'User notification messages',
   git: 'https://github.com/aramk/meteor-notifications.git'
 });
@@ -10,19 +10,19 @@ Package.onUse(function (api) {
   api.versionsFrom('METEOR@1.6.1');
   api.use([
     'coffeescript@2.2.1_1',
-    'email',
+    'email@2.0.0',
     'underscore',
     'templating@1.3.2',
-    'less',
+    'less@4.0.0',
     'reactive-var@1.0.4',
     'tracker@1.0.5',
     'aldeed:simple-schema@1.3.2',
-    'aldeed:collection2@2.3.3',
-    'aramk:events@1.1.0',
+    'aldeed:collection2@3.5.0',
+    'aramk:events@2.0.0',
     'momentjs:moment@2.10.3',
-    'urbanetic:utility@2.0.1',
-    'urbanetic:accounts-ui@1.0.0_1',
-    'aramk:user-status@1.0.0'
+    'urbanetic:utility@3.0.0',
+    'urbanetic:accounts-ui@2.0.0',
+    'aramk:user-status@2.0.0'
   ], ['client', 'server']);
   api.use([
     'semantic:ui-css@2.1.2'
