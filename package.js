@@ -1,7 +1,7 @@
 // Meteor package definition.
 Package.describe({
   name: 'aramk:notifications',
-  version: '1.1.0',
+  version: '1.3.0',
   summary: 'User notification messages',
   git: 'https://github.com/aramk/meteor-notifications.git'
 });
